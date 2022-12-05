@@ -30,7 +30,18 @@ public final class AOC2022 {
         case 1: return try Day1(testInput: testInput)
         case 2: return try Day2(testInput: testInput)
         case 3: return try Day3(testInput: testInput)
-        case 4: return try Day4(testInput: testInput)
+        case 4:
+            if #available(iOS 16.0, macOS 13.0, *) {
+                return try Day4(testInput: testInput)
+            } else {
+                fatalError("Day not supported on older os versions. iOS >= 16.0 or macOS >= 13.0 needed")
+            }
+        case 5:
+            if #available(iOS 16.0, macOS 13.0, *) {
+                return try Day5(testInput: testInput)
+            } else {
+                fatalError("Day not supported on older os versions. iOS >= 16.0 or macOS >= 13.0 needed")
+            }
         default: throw DayError.notImplemented
         }
     }

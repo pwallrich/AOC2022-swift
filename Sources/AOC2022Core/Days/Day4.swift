@@ -8,14 +8,12 @@ import Foundation
 
 #if canImport(RegexBuilder)
 import RegexBuilder
+
+@available(iOS 16.0, *)
 class Day4: Day {
     let input: [(Int, Int, Int, Int)]
 
     init(testInput: Bool) throws {
-        guard #available(iOS 16.0, macOS 13.0, *) else {
-            fatalError("can't use new Regex Builder on current platform")
-        }
-
         let inputString: String
 
         if testInput {
