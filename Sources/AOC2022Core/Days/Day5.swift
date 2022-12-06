@@ -65,75 +65,71 @@ move 1 from 1 to 2
     }
 
     func runPart1() throws {
-        var stacks: [Int: String] = [:]
-
-        for (index, character) in (input[0].last ?? "").enumerated() {
-            guard let stack = character.wholeNumberValue else { continue }
-            var resultString = ""
-            for row in input[0].reversed().dropFirst() {
-                guard index < row.count else { continue }
-                let charIndex = row.index(row.startIndex, offsetBy: index)
-                let nextCrate = row[charIndex]
-                guard !nextCrate.isWhitespace else { continue }
-                resultString.append(nextCrate)
-            }
-            stacks[stack] = resultString
-        }
-
-        for move in input[1] {
-            guard let result = move.wholeMatch(of: moveRegex) else {
-                print("couldn't match move: \(move)")
-                continue
-            }
-            for _ in 1...result.1 {
-                let removedCrate = stacks[result.2]?.popLast() ?? Character("")
-                stacks[result.3]?.append(removedCrate)
-            }
-        }
-
-        let result = stacks
-            .sorted { $0.key < $1.key }
-            .reduce("") { $0 + "\(($1.value.last ?? Character("")))" }
+        let result = simulateMoves(moves: input[1], initial: getStacksFromInput(), part: .first)
 
         print(result)
     }
 
     func runPart2() throws {
+        let result = simulateMoves(moves: input[1], initial: getStacksFromInput(), part: .second)
+
+        print(result)
+    }
+
+    private func getStacksFromInput() -> [Int: String] {
         var stacks: [Int: String] = [:]
 
-        for (index, character) in (input[0].last ?? "").enumerated() {
+        let lineWithIndices = input.first?.last ?? ""
+
+        let inputReversed = input[0].reversed().dropFirst()
+
+        for (index, character) in lineWithIndices.enumerated() {
             guard let stack = character.wholeNumberValue else { continue }
             var resultString = ""
-            for row in input[0].reversed().dropFirst() {
-                guard index < row.count else { continue }
+            for row in inputReversed {
+                guard index < row.count else { break }
                 let charIndex = row.index(row.startIndex, offsetBy: index)
                 let nextCrate = row[charIndex]
-                guard !nextCrate.isWhitespace else { continue }
+
+                guard !nextCrate.isWhitespace else { break }
                 resultString.append(nextCrate)
             }
             stacks[stack] = resultString
         }
+        return stacks
+    }
 
-        for move in input[1] {
+    private func simulateMoves(moves: ArraySlice<String>,
+                               initial: [Int: String],
+                               part: Part) -> String {
+        var stacks = initial
+        for move in moves {
             guard let result = move.wholeMatch(of: moveRegex) else {
                 print("couldn't match move: \(move)")
                 continue
             }
-            var toRemoveFrom = stacks[result.2] ?? ""
-            let splitIndex = toRemoveFrom.index(toRemoveFrom.endIndex, offsetBy: -result.1)
-            let newValue = toRemoveFrom[splitIndex...]
-            toRemoveFrom = String(toRemoveFrom[..<splitIndex])
+            if part == .first {
+                for _ in 1...result.1 {
+                    let removedCrate = stacks[result.2]?.popLast() ?? Character("")
+                    stacks[result.3]?.append(removedCrate)
+                }
+            } else {
+                var toRemoveFrom = stacks[result.2] ?? ""
+                let splitIndex = toRemoveFrom.index(toRemoveFrom.endIndex, offsetBy: -result.1)
+                let newValue = toRemoveFrom[splitIndex...]
+                toRemoveFrom = String(toRemoveFrom[..<splitIndex])
 
-            stacks[result.2] = toRemoveFrom
+                stacks[result.2] = toRemoveFrom
 
-            stacks[result.3, default: ""] += String(newValue)
+                stacks[result.3, default: ""] += String(newValue)
+            }
         }
 
         let result = stacks
             .sorted { $0.key < $1.key }
             .reduce("") { $0 + "\(($1.value.last ?? Character("")))" }
 
-        print(result)
+        return result
     }
 }
 #else
@@ -151,3 +147,8 @@ class Day5: Day {
     func runPart2() throws {}
 }
 #endif
+
+@available(iOS 16.0, macOS 13.0, *)
+private extension Dictionary where Key == Int, Value == String {
+
+}
