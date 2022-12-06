@@ -80,8 +80,6 @@ move 1 from 1 to 2
             stacks[stack] = resultString
         }
 
-        print("starting moves on \(stacks)")
-
         for move in input[1] {
             guard let result = move.wholeMatch(of: moveRegex) else {
                 print("couldn't match move: \(move)")
@@ -91,8 +89,6 @@ move 1 from 1 to 2
                 let removedCrate = stacks[result.2]?.popLast() ?? Character("")
                 stacks[result.3]?.append(removedCrate)
             }
-            print("After performing \(move)")
-            print(stacks)
         }
 
         let result = stacks
@@ -118,8 +114,6 @@ move 1 from 1 to 2
             stacks[stack] = resultString
         }
 
-        print("starting moves on \(stacks)")
-
         for move in input[1] {
             guard let result = move.wholeMatch(of: moveRegex) else {
                 print("couldn't match move: \(move)")
@@ -133,9 +127,6 @@ move 1 from 1 to 2
             stacks[result.2] = toRemoveFrom
 
             stacks[result.3, default: ""] += String(newValue)
-
-            print("After performing \(move)")
-            print(stacks)
         }
 
         let result = stacks

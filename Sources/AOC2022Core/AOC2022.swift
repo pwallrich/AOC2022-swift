@@ -42,6 +42,8 @@ public final class AOC2022 {
             } else {
                 fatalError("Day not supported on older os versions. iOS >= 16.0 or macOS >= 13.0 needed")
             }
+        case 6:
+            return try Day6(testInput: testInput)
         default: throw DayError.notImplemented
         }
     }
