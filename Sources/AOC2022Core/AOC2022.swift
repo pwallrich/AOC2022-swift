@@ -46,6 +46,8 @@ public final class AOC2022 {
             return try Day6(testInput: testInput)
         case 7:
             return try Day7(testInput: testInput)
+        case 8:
+            return try Day8(testInput: testInput)
         default: throw DayError.notImplemented
         }
     }
