@@ -29,6 +29,36 @@ class Day10: Day {
     }
 
     func runPart2() throws {
+        var register = 1
+        var currentStep = 0
+
+        // 40 wide, 6 high
+        var display = Set<Point>()
+        for line in input.split(separator: "\n") where !line.isEmpty {
+            var nextRegister = register
+            let stepsToTake: Int
+            if let value = getValueFrom(line: line) {
+                // addx
+                nextRegister = register + value
+                stepsToTake = 2
+            } else {
+                // noop
+                stepsToTake = 1
+            }
+            for i in 0..<stepsToTake {
+                let x = (currentStep + i) % 40
+                let y = ((currentStep + i) / 40) % 6
+                let point = Point(x: x, y: y)
+
+                if ((register - 1)...(register + 1)).contains(x) {
+                    display.insert(point)
+                }
+                display.prettyPrint(width: 40, height: 6)
+                print()
+            }
+            currentStep += stepsToTake
+            register = nextRegister
+        }
     }
 
     func runCommands(startValue: Int, checkValuesAt steps: [Int]) -> Int {
@@ -40,8 +70,6 @@ class Day10: Day {
         var register = startValue
         var currentStep = 0
 
-        print("starting: first limit: \(nextLimit)\n")
-
         for line in input.split(separator: "\n") where !line.isEmpty {
             var nextRegister = register
             if let value = getValueFrom(line: line) {
@@ -52,13 +80,8 @@ class Day10: Day {
                 // noop
                 currentStep = currentStep + 1
             }
-
-            switch currentStep {
-            case nextLimit + 1, nextLimit + 2, nextLimit:
+            if (nextLimit...(nextLimit + 2)).contains(currentStep) {
                 result += nextLimit * register
-                print("checkin during step: ", nextLimit, register, nextRegister, currentStep, nextLimit * register,  result)
-            default:
-                break
             }
 
             register = nextRegister
@@ -84,6 +107,18 @@ class Day10: Day {
             return nil
         }
         return value
+    }
+}
+
+extension Set where Element == Point {
+    func prettyPrint(width: Int, height: Int) {
+        for y in 0..<height {
+            for x in 0..<width {
+                let toPrint = self.contains(Point(x: x, y: y)) ? "#" : " "
+                print(toPrint, terminator: "")
+            }
+            print()
+        }
     }
 }
 
