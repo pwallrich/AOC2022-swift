@@ -8,8 +8,8 @@
 import Foundation
 
 struct Point: Hashable {
-    let x: Int
-    let y: Int
+    var x: Int
+    var y: Int
 }
 
 extension Point: CustomStringConvertible {

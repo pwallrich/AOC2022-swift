@@ -104,7 +104,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "8 2"
+            argument = "10 2 -t"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

@@ -9,7 +9,7 @@ import Foundation
 #if canImport(RegexBuilder)
 import RegexBuilder
 
-@available(iOS 16.0, *)
+@available(iOS 16.0, macOS 13.0, *)
 class Day4: Day {
     let input: [(Int, Int, Int, Int)]
 

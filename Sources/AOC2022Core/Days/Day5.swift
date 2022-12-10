@@ -9,7 +9,7 @@ import Foundation
 
 #if canImport(RegexBuilder)
 import RegexBuilder
-@available(iOS 16.0, *)
+@available(iOS 16.0, macOS 13.0, *)
 class Day5: Day {
     var day: Int { 5 }
     let input: [ArraySlice<String>]
